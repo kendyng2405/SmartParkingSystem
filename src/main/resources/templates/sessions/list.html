@@ -1,0 +1,19 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Parking Sessions</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1>🎫 Parking Sessions</h1><p>Track vehicle entry and exit</p></div><a th:href="@{/staff/sessions/start}" class="btn btn-primary">➕ Start Session</a></div>
+<div th:if="${success}" class="alert alert-success">✅ <span th:text="${success}"></span></div>
+<div class="filter-bar">
+<a th:href="@{/staff/sessions}" class="btn btn-sm" th:classappend="${filterStatus == null ? 'btn-primary' : 'btn-outline'}">All</a>
+<a th:href="@{/staff/sessions(status='PARKING')}" class="btn btn-sm" th:classappend="${filterStatus == 'PARKING' ? 'btn-primary' : 'btn-outline'}">🚗 Parking</a>
+<a th:href="@{/staff/sessions(status='COMPLETED')}" class="btn btn-sm" th:classappend="${filterStatus == 'COMPLETED' ? 'btn-primary' : 'btn-outline'}">✅ Completed</a>
+</div>
+<div class="card"><div class="table-container"><table><thead><tr><th>License Plate</th><th>Vehicle</th><th>Slot</th><th>Entry Gate</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+<tr th:each="s : ${sessions}"><td><strong th:text="${s.licensePlate}"></strong></td><td th:text="${s.vehicleTypeName}"></td><td th:text="${s.slotCode}"></td><td th:text="${s.entryGate}"></td>
+<td><span class="badge" th:classappend="'badge-'+${s.status?.toLowerCase()}" th:text="${s.status}"></span></td>
+<td><div class="btn-group">
+<a th:href="@{/staff/sessions/view/{id}(id=${s.id})}" class="btn btn-outline btn-sm">👁️</a>
+<a th:if="${s.status == 'PARKING'}" th:href="@{/staff/sessions/end/{id}(id=${s.id})}" class="btn btn-success btn-sm">🏁 End</a>
+<a th:if="${s.status == 'PARKING'}" th:href="@{/staff/payments/create/{id}(id=${s.id})}" class="btn btn-warning btn-sm">💳 Pay</a>
+</div></td></tr>
+</tbody></table></div></div></main></div></body></html>

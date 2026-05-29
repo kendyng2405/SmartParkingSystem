@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Smart Parking</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="app-layout">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <main class="main-content">
+        <div class="page-header">
+            <div><h1>📊 Dashboard</h1><p>Welcome back, <span th:text="${currentUser?.fullName}">User</span></p></div>
+            <div class="btn-group">
+                <a th:href="@{/staff/sessions/start}" class="btn btn-primary btn-sm" th:if="${roleName != 'DRIVER'}">➕ New Session</a>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon">🅿️</div><div class="stat-value" th:text="${totalSlots}">0</div><div class="stat-label">Total Slots</div><div class="progress" style="margin-top:12px"><div class="progress-bar" th:style="'width:'+${occupancyRate}+'%'"></div></div><span style="font-size:12px;color:var(--text-secondary)" th:text="${occupancyRate}+'% occupied'"></span></div>
+            <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" th:text="${availableSlots}">0</div><div class="stat-label">Available Slots</div><div class="stat-change positive">Ready to park</div></div>
+            <div class="stat-card"><div class="stat-icon">🚗</div><div class="stat-value" th:text="${activeSessions}">0</div><div class="stat-label">Active Sessions</div><div class="stat-change positive">Currently parking</div></div>
+            <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-value" th:text="'₫'+${totalRevenue}">₫0</div><div class="stat-label">Total Revenue</div><div class="stat-change positive">All time</div></div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon">🏢</div><div class="stat-value" th:text="${totalBuildings}">0</div><div class="stat-label">Buildings</div></div>
+            <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value" th:text="${reservedSlots}">0</div><div class="stat-label">Reserved Slots</div></div>
+            <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" th:text="${totalUsers}">0</div><div class="stat-label">Total Users</div></div>
+            <div class="stat-card"><div class="stat-icon">⚠️</div><div class="stat-value" th:text="${openIncidents}">0</div><div class="stat-label">Open Incidents</div></div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-container"><h3>🅿️ Slot Status Overview</h3><canvas id="slotChart"></canvas></div>
+            <div class="chart-container"><h3>📈 Occupancy Rate</h3><canvas id="occupancyChart"></canvas></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h2>🕐 Recent Parking Sessions</h2></div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>License Plate</th><th>Vehicle</th><th>Slot</th><th>Entry Gate</th><th>Status</th></tr></thead>
+                    <tbody>
+                    <tr th:each="s : ${recentSessions}">
+                        <td th:text="${s.licensePlate}"></td>
+                        <td th:text="${s.vehicleTypeName}"></td>
+                        <td th:text="${s.slotCode}"></td>
+                        <td th:text="${s.entryGate}"></td>
+                        <td><span class="badge" th:classappend="'badge-'+${s.status?.toLowerCase()}" th:text="${s.status}"></span></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(recentSessions)}"><td colspan="5" class="empty-state"><p>No sessions yet</p></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+<script th:inline="javascript">
+    const avail = [[${availableSlots}]], occ = [[${occupiedSlots}]], res = [[${reservedSlots}]];
+    new Chart(document.getElementById('slotChart'),{type:'doughnut',data:{labels:['Available','Occupied','Reserved'],datasets:[{data:[avail,occ,res],backgroundColor:['rgba(16,185,129,0.8)','rgba(239,68,68,0.8)','rgba(245,158,11,0.8)'],borderWidth:0}]},options:{responsive:true,plugins:{legend:{labels:{color:'#e2e8f0'}}}}});
+    new Chart(document.getElementById('occupancyChart'),{type:'bar',data:{labels:['Available','Occupied','Reserved','Total'],datasets:[{label:'Slots',data:[avail,occ,res,avail+occ+res],backgroundColor:['rgba(16,185,129,0.6)','rgba(239,68,68,0.6)','rgba(245,158,11,0.6)','rgba(59,130,246,0.6)'],borderRadius:8}]},options:{responsive:true,scales:{y:{ticks:{color:'#94a3b8'},grid:{color:'rgba(255,255,255,0.05)'}},x:{ticks:{color:'#94a3b8'},grid:{display:false}}},plugins:{legend:{labels:{color:'#e2e8f0'}}}}});
+</script>
+</body>
+</html>

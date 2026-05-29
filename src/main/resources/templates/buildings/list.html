@@ -1,0 +1,11 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Buildings - Smart Parking</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1>🏢 Buildings</h1><p>Manage parking buildings</p></div><a th:href="@{/manager/buildings/create}" class="btn btn-primary">➕ Add Building</a></div>
+<div th:if="${success}" class="alert alert-success">✅ <span th:text="${success}"></span></div>
+<div th:if="${error}" class="alert alert-error">⚠️ <span th:text="${error}"></span></div>
+<div class="card"><div class="table-container"><table><thead><tr><th>Name</th><th>Address</th><th>Floors</th><th>Hours</th><th>Actions</th></tr></thead><tbody>
+<tr th:each="b : ${buildings}"><td th:text="${b.buildingName}"></td><td th:text="${b.address}"></td><td th:text="${b.totalFloors}"></td><td><span th:text="${b.operatingStartTime}"></span> - <span th:text="${b.operatingEndTime}"></span></td>
+<td><div class="btn-group"><a th:href="@{/manager/buildings/edit/{id}(id=${b.id})}" class="btn btn-outline btn-sm">✏️</a><a th:href="@{/manager/buildings/delete/{id}(id=${b.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Delete?')">🗑️</a></div></td></tr>
+<tr th:if="${#lists.isEmpty(buildings)}"><td colspan="5"><div class="empty-state"><div class="icon">🏢</div><h3>No buildings yet</h3><p>Add your first building</p></div></td></tr>
+</tbody></table></div></div></main></div></body></html>

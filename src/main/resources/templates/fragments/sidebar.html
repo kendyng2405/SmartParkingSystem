@@ -1,0 +1,44 @@
+<div th:fragment="sidebar" class="sidebar">
+    <div class="sidebar-brand">
+        <span class="icon">🅿️</span>
+        <div><h2>Smart Parking</h2><small>Management System</small></div>
+    </div>
+    <nav>
+        <div class="nav-section">
+            <div class="nav-section-title">Main</div>
+            <a th:href="@{/dashboard}" class="nav-link"><span class="icon">📊</span> Dashboard</a>
+        </div>
+        <!-- Manager Menu -->
+        <div class="nav-section" th:if="${roleName == 'ADMIN' || roleName == 'MANAGER'}">
+            <div class="nav-section-title">Manager</div>
+            <a th:href="@{/manager/buildings}" class="nav-link"><span class="icon">🏢</span> Buildings</a>
+            <a th:href="@{/manager/vehicle-types}" class="nav-link"><span class="icon">🚗</span> Vehicle Types</a>
+            <a th:href="@{/manager/floors}" class="nav-link"><span class="icon">🏗️</span> Floors</a>
+            <a th:href="@{/manager/zones}" class="nav-link"><span class="icon">📍</span> Zones</a>
+            <a th:href="@{/manager/slots}" class="nav-link"><span class="icon">🅿️</span> Parking Slots</a>
+            <a th:href="@{/manager/pricing}" class="nav-link"><span class="icon">💰</span> Pricing Policies</a>
+            <a th:href="@{/manager/reports}" class="nav-link"><span class="icon">📈</span> Reports</a>
+        </div>
+        <!-- Staff Menu -->
+        <div class="nav-section" th:if="${roleName == 'ADMIN' || roleName == 'MANAGER' || roleName == 'STAFF'}">
+            <div class="nav-section-title">Operations</div>
+            <a th:href="@{/staff/sessions}" class="nav-link"><span class="icon">🎫</span> Parking Sessions</a>
+            <a th:href="@{/staff/reservations}" class="nav-link"><span class="icon">📋</span> Reservations</a>
+            <a th:href="@{/staff/payments}" class="nav-link"><span class="icon">💳</span> Payments</a>
+            <a th:href="@{/staff/incidents}" class="nav-link"><span class="icon">⚠️</span> Incidents</a>
+        </div>
+        <!-- Admin Menu -->
+        <div class="nav-section" th:if="${roleName == 'ADMIN'}">
+            <div class="nav-section-title">Administration</div>
+            <a th:href="@{/admin/users}" class="nav-link"><span class="icon">👥</span> User Management</a>
+        </div>
+    </nav>
+    <div class="user-info" style="margin-top:24px">
+        <div class="user-avatar" th:text="${currentUser != null ? currentUser.fullName?.substring(0,1) : 'U'}"></div>
+        <div class="user-details">
+            <div class="name" th:text="${currentUser?.fullName}">User</div>
+            <div class="role" th:text="${roleName}">ROLE</div>
+        </div>
+        <a th:href="@{/logout}" style="color:var(--accent-red);text-decoration:none" title="Logout">🚪</a>
+    </div>
+</div>

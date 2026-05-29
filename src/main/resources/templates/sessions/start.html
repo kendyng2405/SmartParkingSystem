@@ -1,0 +1,15 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Start Session</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1>➕ Start Parking Session</h1><p>Register a vehicle entering the parking lot</p></div><a th:href="@{/staff/sessions}" class="btn btn-outline">← Back</a></div>
+<div class="card" style="max-width:600px"><form th:action="@{/staff/sessions/start}" method="post">
+<div class="form-group"><label>License Plate</label><input type="text" name="licensePlate" class="form-control" placeholder="e.g. 59A-12345" required></div>
+<div class="form-group"><label>Vehicle Type</label><select name="vehicleTypeName" class="form-control" required>
+<option value="">Select Type</option><option th:each="vt : ${vehicleTypes}" th:value="${vt.typeName}" th:text="${vt.typeName}"></option></select></div>
+<div class="form-group"><label>Parking Slot</label><select name="slotId" class="form-control" required onchange="this.form.slotCode.value=this.options[this.selectedIndex].getAttribute('data-code')">
+<option value="">Select Available Slot</option><option th:each="s : ${availableSlots}" th:value="${s.id}" th:text="${s.slotCode}+' ('+${s.vehicleTypeName}+' - '+${s.zoneName}+')'" th:attr="data-code=${s.slotCode}"></option></select>
+<input type="hidden" name="slotCode"></div>
+<div class="form-group"><label>Entry Gate</label><select name="entryGate" class="form-control" required>
+<option value="Gate A">Gate A</option><option value="Gate B">Gate B</option><option value="Gate C">Gate C</option></select></div>
+<button type="submit" class="btn btn-success btn-block">🚗 Start Session</button>
+</form></div></main></div></body></html>

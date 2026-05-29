@@ -1,0 +1,10 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Pricing Policies</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1>💰 Pricing Policies</h1><p>Manage parking fee policies</p></div><a th:href="@{/manager/pricing/create}" class="btn btn-primary">➕ Add Policy</a></div>
+<div th:if="${success}" class="alert alert-success">✅ <span th:text="${success}"></span></div>
+<div class="card"><div class="table-container"><table><thead><tr><th>Policy</th><th>Vehicle Type</th><th>Base Price</th><th>Per Hour</th><th>Max Daily</th><th>Lost Ticket Fee</th><th>Actions</th></tr></thead><tbody>
+<tr th:each="p : ${policies}"><td><strong th:text="${p.policyName}"></strong></td><td th:text="${p.vehicleTypeName}"></td>
+<td th:text="${p.basePrice}+'₫'"></td><td th:text="${p.pricePerHour}+'₫'"></td><td th:text="${p.maxDailyRate}+'₫'"></td><td th:text="${p.lostTicketFee}+'₫'"></td>
+<td><div class="btn-group"><a th:href="@{/manager/pricing/edit/{id}(id=${p.id})}" class="btn btn-outline btn-sm">✏️</a><a th:href="@{/manager/pricing/delete/{id}(id=${p.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Delete?')">🗑️</a></div></td></tr>
+</tbody></table></div></div></main></div></body></html>

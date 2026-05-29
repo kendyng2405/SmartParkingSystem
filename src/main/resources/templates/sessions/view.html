@@ -1,0 +1,15 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Session Details</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1>👁️ Session Details</h1></div><a th:href="@{/staff/sessions}" class="btn btn-outline">← Back</a></div>
+<div class="card" style="max-width:600px">
+<div style="display:grid;gap:16px">
+<div style="padding:16px;background:rgba(255,255,255,0.03);border-radius:12px"><label style="font-size:12px;color:var(--text-secondary)">LICENSE PLATE</label><p style="font-size:24px;font-weight:800" th:text="${session?.licensePlate}"></p></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div style="padding:16px;background:rgba(255,255,255,0.03);border-radius:12px"><label style="font-size:12px;color:var(--text-secondary)">VEHICLE TYPE</label><p th:text="${session?.vehicleTypeName}"></p></div>
+<div style="padding:16px;background:rgba(255,255,255,0.03);border-radius:12px"><label style="font-size:12px;color:var(--text-secondary)">SLOT</label><p th:text="${session?.slotCode}"></p></div>
+<div style="padding:16px;background:rgba(255,255,255,0.03);border-radius:12px"><label style="font-size:12px;color:var(--text-secondary)">ENTRY GATE</label><p th:text="${session?.entryGate}"></p></div>
+<div style="padding:16px;background:rgba(255,255,255,0.03);border-radius:12px"><label style="font-size:12px;color:var(--text-secondary)">STATUS</label><p><span class="badge" th:classappend="'badge-'+${session?.status?.toLowerCase()}" th:text="${session?.status}"></span></p></div>
+</div>
+<div style="padding:16px;background:rgba(255,255,255,0.03);border-radius:12px"><label style="font-size:12px;color:var(--text-secondary)">FEE</label><p style="font-size:20px;font-weight:700;color:var(--accent-green)" th:text="${session?.finalFee}+'₫'"></p></div>
+</div></div></main></div></body></html>

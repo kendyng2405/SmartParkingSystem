@@ -1,0 +1,27 @@
+# Build
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.class
+*.jar
+*.war
+*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+.project
+.classpath
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Firebase credentials (DO NOT COMMIT REAL CREDENTIALS)
+# src/main/resources/firebase-service-account.json
+
+# PDF
+*.pdf
+pdf_content.txt

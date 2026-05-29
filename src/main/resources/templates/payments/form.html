@@ -1,0 +1,19 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Make Payment</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1>💳 Make Payment</h1></div><a th:href="@{/staff/payments}" class="btn btn-outline">← Back</a></div>
+<div class="card" style="max-width:600px">
+<div style="padding:20px;background:rgba(255,255,255,0.03);border-radius:12px;margin-bottom:24px">
+<p><strong>License Plate:</strong> <span th:text="${session?.licensePlate}"></span></p>
+<p><strong>Vehicle:</strong> <span th:text="${session?.vehicleTypeName}"></span></p>
+<p><strong>Slot:</strong> <span th:text="${session?.slotCode}"></span></p>
+</div>
+<form th:action="@{/staff/payments/save}" method="post">
+<input type="hidden" name="sessionId" th:value="${session?.id}">
+<input type="hidden" name="licensePlate" th:value="${session?.licensePlate}">
+<div class="form-group"><label>Amount (₫)</label><input type="number" name="amount" class="form-control" th:value="${session?.estimatedFee}" step="0.01" required></div>
+<div class="form-group"><label>Payment Method</label><select name="paymentMethod" class="form-control" required>
+<option value="CASH">💵 Cash</option><option value="BANK_TRANSFER">🏦 Bank Transfer</option>
+<option value="E_WALLET">📱 E-Wallet</option><option value="CREDIT_CARD">💳 Credit Card</option></select></div>
+<button type="submit" class="btn btn-success btn-block">✅ Confirm Payment</button>
+</form></div></main></div></body></html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Zone Form</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1 th:text="${zone != null ? '✏️ Edit Zone' : '➕ Add Zone'}">Add</h1></div><a th:href="@{/manager/zones}" class="btn btn-outline">← Back</a></div>
+<div class="card" style="max-width:600px"><form th:action="@{/manager/zones/save}" method="post">
+<input type="hidden" name="id" th:value="${zone?.id}">
+<div class="form-group"><label>Floor</label><select name="floorId" class="form-control" required onchange="this.form.floorName.value=this.options[this.selectedIndex].text">
+<option value="">Select Floor</option><option th:each="f : ${floors}" th:value="${f.id}" th:text="${f.floorName}" th:selected="${zone != null && zone.floorId == f.id}"></option></select>
+<input type="hidden" name="floorName" th:value="${zone?.floorName}"></div>
+<div class="form-group"><label>Zone Name</label><input type="text" name="zoneName" class="form-control" th:value="${zone?.zoneName}" required></div>
+<div class="form-group"><label>Description</label><input type="text" name="description" class="form-control" th:value="${zone?.description}"></div>
+<button type="submit" class="btn btn-primary btn-block">💾 Save</button>
+</form></div></main></div></body></html>

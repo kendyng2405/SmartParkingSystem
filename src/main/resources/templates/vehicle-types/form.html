@@ -1,0 +1,10 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Vehicle Type Form</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1 th:text="${vehicleType != null ? '✏️ Edit Vehicle Type' : '➕ Add Vehicle Type'}">Add</h1></div><a th:href="@{/manager/vehicle-types}" class="btn btn-outline">← Back</a></div>
+<div class="card" style="max-width:600px"><form th:action="@{/manager/vehicle-types/save}" method="post">
+<input type="hidden" name="id" th:value="${vehicleType?.id}">
+<div class="form-group"><label>Type Name</label><input type="text" name="typeName" class="form-control" th:value="${vehicleType?.typeName}" required></div>
+<div class="form-group"><label>Description</label><input type="text" name="description" class="form-control" th:value="${vehicleType?.description}"></div>
+<button type="submit" class="btn btn-primary btn-block">💾 Save</button>
+</form></div></main></div></body></html>

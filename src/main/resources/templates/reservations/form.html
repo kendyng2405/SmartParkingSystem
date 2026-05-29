@@ -1,0 +1,18 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>New Reservation</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1>➕ New Reservation</h1></div><a th:href="@{/staff/reservations}" class="btn btn-outline">← Back</a></div>
+<div class="card" style="max-width:600px"><form th:action="@{/staff/reservations/save}" method="post">
+<div class="form-group"><label>User</label><select name="userId" class="form-control" required onchange="this.form.userName.value=this.options[this.selectedIndex].text">
+<option value="">Select User</option><option th:each="u : ${users}" th:value="${u.id}" th:text="${u.fullName}+' ('+${u.email}+')'"></option></select>
+<input type="hidden" name="userName"></div>
+<div class="form-group"><label>Vehicle Type</label><select name="vehicleTypeId" class="form-control" required onchange="this.form.vehicleTypeName.value=this.options[this.selectedIndex].text">
+<option value="">Select</option><option th:each="vt : ${vehicleTypes}" th:value="${vt.id}" th:text="${vt.typeName}"></option></select>
+<input type="hidden" name="vehicleTypeName"></div>
+<div class="form-group"><label>Parking Slot</label><select name="slotId" class="form-control" required onchange="this.form.slotCode.value=this.options[this.selectedIndex].getAttribute('data-code')">
+<option value="">Select</option><option th:each="s : ${availableSlots}" th:value="${s.id}" th:text="${s.slotCode}+' ('+${s.zoneName}+')'" th:attr="data-code=${s.slotCode}"></option></select>
+<input type="hidden" name="slotCode"></div>
+<div class="form-group"><label>Start Time</label><input type="datetime-local" name="reservationStart" class="form-control" required></div>
+<div class="form-group"><label>End Time</label><input type="datetime-local" name="reservationEnd" class="form-control" required></div>
+<button type="submit" class="btn btn-primary btn-block">📋 Create Reservation</button>
+</form></div></main></div></body></html>

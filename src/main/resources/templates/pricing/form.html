@@ -1,0 +1,19 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Pricing Form</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1 th:text="${policy != null ? '✏️ Edit Policy' : '➕ Add Policy'}">Add</h1></div><a th:href="@{/manager/pricing}" class="btn btn-outline">← Back</a></div>
+<div class="card" style="max-width:600px"><form th:action="@{/manager/pricing/save}" method="post">
+<input type="hidden" name="id" th:value="${policy?.id}">
+<div class="form-group"><label>Policy Name</label><input type="text" name="policyName" class="form-control" th:value="${policy?.policyName}" required></div>
+<div class="form-group"><label>Vehicle Type</label><select name="vehicleTypeId" class="form-control" required onchange="this.form.vehicleTypeName.value=this.options[this.selectedIndex].text">
+<option value="">Select</option><option th:each="vt : ${vehicleTypes}" th:value="${vt.id}" th:text="${vt.typeName}" th:selected="${policy != null && policy.vehicleTypeId == vt.id}"></option></select>
+<input type="hidden" name="vehicleTypeName" th:value="${policy?.vehicleTypeName}"></div>
+<div class="form-group"><label>Base Price (₫)</label><input type="number" name="basePrice" class="form-control" th:value="${policy?.basePrice}" step="0.01" required></div>
+<div class="form-group"><label>Price Per Hour (₫)</label><input type="number" name="pricePerHour" class="form-control" th:value="${policy?.pricePerHour}" step="0.01" required></div>
+<div class="form-group"><label>Max Daily Rate (₫)</label><input type="number" name="maxDailyRate" class="form-control" th:value="${policy?.maxDailyRate}" step="0.01" required></div>
+<div class="form-group"><label>Lost Ticket Fee (₫)</label><input type="number" name="lostTicketFee" class="form-control" th:value="${policy?.lostTicketFee}" step="0.01" required></div>
+<div class="form-group"><label>Overtime Fee/Hour (₫)</label><input type="number" name="overtimeFeePerHour" class="form-control" th:value="${policy?.overtimeFeePerHour}" step="0.01" required></div>
+<div class="form-group"><label>Effective From</label><input type="date" name="effectiveFrom" class="form-control" th:value="${policy?.effectiveFrom}" required></div>
+<div class="form-group"><label>Effective To</label><input type="date" name="effectiveTo" class="form-control" th:value="${policy?.effectiveTo}"></div>
+<button type="submit" class="btn btn-primary btn-block">💾 Save</button>
+</form></div></main></div></body></html>

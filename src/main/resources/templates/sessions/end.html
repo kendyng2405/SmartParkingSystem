@@ -1,0 +1,18 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>End Session</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1>🏁 End Parking Session</h1></div><a th:href="@{/staff/sessions}" class="btn btn-outline">← Back</a></div>
+<div class="card" style="max-width:600px">
+<div style="margin-bottom:24px;padding:20px;background:rgba(255,255,255,0.03);border-radius:12px">
+<p><strong>License Plate:</strong> <span th:text="${session?.licensePlate}"></span></p>
+<p><strong>Vehicle Type:</strong> <span th:text="${session?.vehicleTypeName}"></span></p>
+<p><strong>Slot:</strong> <span th:text="${session?.slotCode}"></span></p>
+<p><strong>Parking Duration:</strong> <span th:text="${parkingHours}"></span> hour(s)</p>
+<p style="font-size:24px;font-weight:800;color:var(--accent-green);margin-top:12px">Estimated Fee: <span th:text="${estimatedFee}"></span>₫</p>
+</div>
+<form th:action="@{/staff/sessions/end/{id}(id=${session?.id})}" method="post">
+<div class="form-group"><label>Exit Gate</label><select name="exitGate" class="form-control" required>
+<option value="Gate A">Gate A</option><option value="Gate B">Gate B</option><option value="Gate C">Gate C</option></select></div>
+<div class="form-group"><label>Final Fee (₫)</label><input type="number" name="finalFee" class="form-control" th:value="${estimatedFee}" step="0.01" required></div>
+<button type="submit" class="btn btn-success btn-block">✅ End Session & Collect Fee</button>
+</form></div></main></div></body></html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Slot Form</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1 th:text="${slot != null ? '✏️ Edit Slot' : '➕ Add Slot'}">Add</h1></div><a th:href="@{/manager/slots}" class="btn btn-outline">← Back</a></div>
+<div class="card" style="max-width:600px"><form th:action="@{/manager/slots/save}" method="post">
+<input type="hidden" name="id" th:value="${slot?.id}">
+<div class="form-group"><label>Zone</label><select name="zoneId" class="form-control" required onchange="this.form.zoneName.value=this.options[this.selectedIndex].text">
+<option value="">Select Zone</option><option th:each="z : ${zones}" th:value="${z.id}" th:text="${z.zoneName}" th:selected="${slot != null && slot.zoneId == z.id}"></option></select>
+<input type="hidden" name="zoneName" th:value="${slot?.zoneName}"></div>
+<div class="form-group"><label>Slot Code</label><input type="text" name="slotCode" class="form-control" th:value="${slot?.slotCode}" placeholder="e.g. A-001" required></div>
+<div class="form-group"><label>Vehicle Type</label><select name="vehicleTypeId" class="form-control" required onchange="this.form.vehicleTypeName.value=this.options[this.selectedIndex].text">
+<option value="">Select Type</option><option th:each="vt : ${vehicleTypes}" th:value="${vt.id}" th:text="${vt.typeName}" th:selected="${slot != null && slot.vehicleTypeId == vt.id}"></option></select>
+<input type="hidden" name="vehicleTypeName" th:value="${slot?.vehicleTypeName}"></div>
+<div class="form-group"><label>Status</label><select name="status" class="form-control">
+<option value="AVAILABLE" th:selected="${slot?.status == 'AVAILABLE'}">Available</option>
+<option value="MAINTENANCE" th:selected="${slot?.status == 'MAINTENANCE'}">Maintenance</option>
+<option value="LOCKED" th:selected="${slot?.status == 'LOCKED'}">Locked</option></select></div>
+<button type="submit" class="btn btn-primary btn-block">💾 Save</button>
+</form></div></main></div></body></html>

@@ -1,0 +1,11 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Payments</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1>💳 Payments</h1><p>Payment history and management</p></div></div>
+<div th:if="${success}" class="alert alert-success">✅ <span th:text="${success}"></span></div>
+<div class="card"><div class="table-container"><table><thead><tr><th>License Plate</th><th>Amount</th><th>Method</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+<tr th:each="p : ${payments}"><td><strong th:text="${p.licensePlate}"></strong></td><td th:text="${p.amount}+'₫'"></td>
+<td th:text="${p.paymentMethod}"></td>
+<td><span class="badge" th:classappend="'badge-'+${p.paymentStatus?.toLowerCase()}" th:text="${p.paymentStatus}"></span></td>
+<td><form th:if="${p.paymentStatus == 'PAID'}" th:action="@{/staff/payments/refund/{id}(id=${p.id})}" method="post" style="display:inline"><button type="submit" class="btn btn-outline btn-sm" onclick="return confirm('Refund?')">↩️ Refund</button></form></td></tr>
+</tbody></table></div></div></main></div></body></html>

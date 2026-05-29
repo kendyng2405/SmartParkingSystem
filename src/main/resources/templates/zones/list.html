@@ -1,0 +1,9 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Zones</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1>📍 Zones</h1><p>Manage parking zones</p></div><a th:href="@{/manager/zones/create}" class="btn btn-primary">➕ Add Zone</a></div>
+<div th:if="${success}" class="alert alert-success">✅ <span th:text="${success}"></span></div>
+<div class="card"><div class="table-container"><table><thead><tr><th>Zone Name</th><th>Floor</th><th>Description</th><th>Actions</th></tr></thead><tbody>
+<tr th:each="z : ${zones}"><td><strong th:text="${z.zoneName}"></strong></td><td th:text="${z.floorName}"></td><td th:text="${z.description}"></td>
+<td><div class="btn-group"><a th:href="@{/manager/zones/edit/{id}(id=${z.id})}" class="btn btn-outline btn-sm">✏️</a><a th:href="@{/manager/zones/delete/{id}(id=${z.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Delete?')">🗑️</a></div></td></tr>
+</tbody></table></div></div></main></div></body></html>

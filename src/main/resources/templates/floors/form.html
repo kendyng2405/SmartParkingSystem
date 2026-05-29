@@ -1,0 +1,13 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Floor Form</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1 th:text="${floor != null ? '✏️ Edit Floor' : '➕ Add Floor'}">Add</h1></div><a th:href="@{/manager/floors}" class="btn btn-outline">← Back</a></div>
+<div class="card" style="max-width:600px"><form th:action="@{/manager/floors/save}" method="post">
+<input type="hidden" name="id" th:value="${floor?.id}">
+<div class="form-group"><label>Building</label><select name="buildingId" class="form-control" required onchange="this.form.buildingName.value=this.options[this.selectedIndex].text">
+<option value="">Select Building</option><option th:each="b : ${buildings}" th:value="${b.id}" th:text="${b.buildingName}" th:selected="${floor != null && floor.buildingId == b.id}"></option></select>
+<input type="hidden" name="buildingName" th:value="${floor?.buildingName}"></div>
+<div class="form-group"><label>Floor Number</label><input type="number" name="floorNumber" class="form-control" th:value="${floor?.floorNumber}" min="0" required></div>
+<div class="form-group"><label>Floor Name</label><input type="text" name="floorName" class="form-control" th:value="${floor?.floorName}" required></div>
+<button type="submit" class="btn btn-primary btn-block">💾 Save</button>
+</form></div></main></div></body></html>

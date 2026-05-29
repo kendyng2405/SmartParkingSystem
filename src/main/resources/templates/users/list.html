@@ -1,0 +1,15 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>User Management</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1>👥 User Management</h1><p>Manage system users and roles</p></div><a th:href="@{/admin/users/create}" class="btn btn-primary">➕ Add User</a></div>
+<div th:if="${success}" class="alert alert-success">✅ <span th:text="${success}"></span></div>
+<div class="card"><div class="table-container"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+<tr th:each="u : ${users}"><td><strong th:text="${u.fullName}"></strong></td><td th:text="${u.email}"></td><td th:text="${u.phoneNumber}"></td>
+<td><span class="badge" th:classappend="'badge-'+${u.roleName?.toLowerCase()}" th:text="${u.roleName}"></span></td>
+<td><span th:if="${u.isActive}" class="badge badge-available">Active</span><span th:unless="${u.isActive}" class="badge badge-locked">Inactive</span></td>
+<td><div class="btn-group">
+<a th:href="@{/admin/users/edit/{id}(id=${u.id})}" class="btn btn-outline btn-sm">✏️</a>
+<form th:action="@{/admin/users/toggle-active/{id}(id=${u.id})}" method="post" style="display:inline"><input type="hidden" name="isActive" th:value="${u.isActive}">
+<button type="submit" class="btn btn-sm" th:classappend="${u.isActive ? 'btn-warning' : 'btn-success'}" th:text="${u.isActive ? '⏸️' : '▶️'}"></button></form>
+<a th:href="@{/admin/users/delete/{id}(id=${u.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Delete user?')">🗑️</a>
+</div></td></tr></tbody></table></div></div></main></div></body></html>

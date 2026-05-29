@@ -1,0 +1,25 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Incidents</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1>⚠️ Incident Reports</h1><p>Handle parking exceptions</p></div><a th:href="@{/staff/incidents/create}" class="btn btn-primary">➕ Report Incident</a></div>
+<div th:if="${success}" class="alert alert-success">✅ <span th:text="${success}"></span></div>
+<div class="filter-bar">
+<a th:href="@{/staff/incidents}" class="btn btn-sm" th:classappend="${filterType == null ? 'btn-primary' : 'btn-outline'}">All</a>
+<a th:href="@{/staff/incidents(type='LOST_TICKET')}" class="btn btn-sm btn-outline">🎫 Lost Ticket</a>
+<a th:href="@{/staff/incidents(type='WRONG_LICENSE_PLATE')}" class="btn btn-sm btn-outline">🔢 Wrong Plate</a>
+<a th:href="@{/staff/incidents(type='OVERTIME')}" class="btn btn-sm btn-outline">⏰ Overtime</a>
+<a th:href="@{/staff/incidents(type='WRONG_ZONE')}" class="btn btn-sm btn-outline">📍 Wrong Zone</a>
+<a th:href="@{/staff/incidents(type='UNPAID')}" class="btn btn-sm btn-outline">💸 Unpaid</a>
+</div>
+<div class="card"><div class="table-container"><table><thead><tr><th>Type</th><th>Description</th><th>Reported By</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+<tr th:each="i : ${incidents}"><td><span class="badge" th:text="${i.incidentType}"></span></td>
+<td th:text="${i.description}" style="max-width:300px;overflow:hidden;text-overflow:ellipsis"></td>
+<td th:text="${i.reportedByName}"></td>
+<td><span class="badge" th:classappend="'badge-'+${i.status?.toLowerCase()}" th:text="${i.status}"></span></td>
+<td><div class="btn-group">
+<form th:action="@{/staff/incidents/update-status/{id}(id=${i.id})}" method="post" style="display:inline">
+<select name="status" class="form-control" style="width:auto;padding:6px 10px;font-size:12px" onchange="this.form.submit()">
+<option value="OPEN" th:selected="${i.status == 'OPEN'}">Open</option><option value="IN_PROGRESS" th:selected="${i.status == 'IN_PROGRESS'}">In Progress</option>
+<option value="RESOLVED" th:selected="${i.status == 'RESOLVED'}">Resolved</option><option value="CLOSED" th:selected="${i.status == 'CLOSED'}">Closed</option></select></form>
+<a th:href="@{/staff/incidents/delete/{id}(id=${i.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Delete?')">🗑️</a>
+</div></td></tr></tbody></table></div></div></main></div></body></html>

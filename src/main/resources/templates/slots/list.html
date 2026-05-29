@@ -1,0 +1,22 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Parking Slots</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1>🅿️ Parking Slots</h1><p>Manage and monitor parking slots</p></div><a th:href="@{/manager/slots/create}" class="btn btn-primary">➕ Add Slot</a></div>
+<div th:if="${success}" class="alert alert-success">✅ <span th:text="${success}"></span></div>
+<div class="filter-bar">
+<a th:href="@{/manager/slots}" class="btn btn-sm" th:classappend="${filterStatus == null ? 'btn-primary' : 'btn-outline'}">All</a>
+<a th:href="@{/manager/slots(status='AVAILABLE')}" class="btn btn-sm" th:classappend="${filterStatus == 'AVAILABLE' ? 'btn-primary' : 'btn-outline'}">✅ Available</a>
+<a th:href="@{/manager/slots(status='OCCUPIED')}" class="btn btn-sm" th:classappend="${filterStatus == 'OCCUPIED' ? 'btn-primary' : 'btn-outline'}">🚗 Occupied</a>
+<a th:href="@{/manager/slots(status='RESERVED')}" class="btn btn-sm" th:classappend="${filterStatus == 'RESERVED' ? 'btn-primary' : 'btn-outline'}">📋 Reserved</a>
+<a th:href="@{/manager/slots(status='LOCKED')}" class="btn btn-sm" th:classappend="${filterStatus == 'LOCKED' ? 'btn-primary' : 'btn-outline'}">🔒 Locked</a>
+</div>
+<div class="card"><div class="table-container"><table><thead><tr><th>Slot Code</th><th>Zone</th><th>Vehicle Type</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+<tr th:each="s : ${slots}"><td><strong th:text="${s.slotCode}"></strong></td><td th:text="${s.zoneName}"></td><td th:text="${s.vehicleTypeName}"></td>
+<td><span class="badge" th:classappend="'badge-'+${s.status?.toLowerCase()}" th:text="${s.status}"></span></td>
+<td><div class="btn-group">
+<a th:href="@{/manager/slots/edit/{id}(id=${s.id})}" class="btn btn-outline btn-sm">✏️</a>
+<a th:if="${s.status != 'LOCKED'}" th:href="@{/manager/slots/lock/{id}(id=${s.id})}" class="btn btn-warning btn-sm">🔒</a>
+<a th:if="${s.status == 'LOCKED'}" th:href="@{/manager/slots/unlock/{id}(id=${s.id})}" class="btn btn-success btn-sm">🔓</a>
+<a th:href="@{/manager/slots/delete/{id}(id=${s.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Delete?')">🗑️</a>
+</div></td></tr>
+</tbody></table></div></div></main></div></body></html>

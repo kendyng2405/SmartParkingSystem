@@ -1,0 +1,38 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Reports</title><link rel="stylesheet" th:href="@{/css/style.css}"><script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head><body>
+<div class="app-layout"><div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<main class="main-content">
+<div class="page-header"><div><h1>📈 Reports & Analytics</h1><p>Revenue, traffic, occupancy, and incident reports</p></div></div>
+
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-icon">💰</div><div class="stat-value" th:text="'₫'+${#numbers.formatDecimal(totalRevenue,0,'COMMA',2,'POINT')}">₫0</div><div class="stat-label">Total Revenue</div></div>
+<div class="stat-card"><div class="stat-icon">🎫</div><div class="stat-value" th:text="${totalSessions}">0</div><div class="stat-label">Total Sessions</div></div>
+<div class="stat-card"><div class="stat-icon">📊</div><div class="stat-value" th:text="${#numbers.formatDecimal(occupancyRate,0,2)}+'%'">0%</div><div class="stat-label">Occupancy Rate</div></div>
+<div class="stat-card"><div class="stat-icon">⚠️</div><div class="stat-value" th:text="${openIncidents}">0</div><div class="stat-label">Open Incidents</div></div>
+</div>
+
+<div class="charts-grid">
+<div class="chart-container"><h3>💰 Revenue by Payment Method</h3><canvas id="revenueChart"></canvas></div>
+<div class="chart-container"><h3>🅿️ Slot Status Distribution</h3><canvas id="slotChart"></canvas></div>
+<div class="chart-container"><h3>🚗 Vehicle Type Distribution</h3><canvas id="vehicleChart"></canvas></div>
+<div class="chart-container"><h3>⚠️ Incident Types</h3><canvas id="incidentChart"></canvas></div>
+</div>
+
+<div class="stats-grid">
+<div class="card"><div class="card-header"><h2>🎫 Session Summary</h2></div>
+<p>Active: <strong th:text="${activeSessions}"></strong> | Completed: <strong th:text="${completedSessions}"></strong></p></div>
+<div class="card"><div class="card-header"><h2>💳 Payment Summary</h2></div>
+<p>Paid: <strong th:text="${paidCount}"></strong> | Pending: <strong th:text="${pendingCount}"></strong> | Refunded: <strong th:text="${refundedCount}"></strong></p></div>
+<div class="card"><div class="card-header"><h2>⚠️ Incident Summary</h2></div>
+<p>Open: <strong th:text="${openIncidents}"></strong> | In Progress: <strong th:text="${inProgressIncidents}"></strong> | Resolved: <strong th:text="${resolvedIncidents}"></strong></p></div>
+</div>
+</main></div>
+<script th:inline="javascript">
+const colors=['rgba(59,130,246,0.8)','rgba(16,185,129,0.8)','rgba(245,158,11,0.8)','rgba(139,92,246,0.8)','rgba(239,68,68,0.8)','rgba(6,182,212,0.8)'];
+const cfg={responsive:true,plugins:{legend:{labels:{color:'#e2e8f0'}}}};
+new Chart(document.getElementById('revenueChart'),{type:'doughnut',data:{labels:['Cash','Credit Card','E-Wallet','Bank Transfer'],datasets:[{data:[[[${cashRevenue}]],[[${cardRevenue}]],[[${walletRevenue}]],[[${bankRevenue}]]],backgroundColor:colors,borderWidth:0}]},options:cfg});
+new Chart(document.getElementById('slotChart'),{type:'pie',data:{labels:['Available','Occupied','Reserved','Maintenance','Locked'],datasets:[{data:[[[${availableSlots}]],[[${occupiedSlots}]],[[${reservedSlots}]],[[${maintenanceSlots}]],[[${lockedSlots}]]],backgroundColor:colors,borderWidth:0}]},options:cfg});
+const vtc=[[${vehicleTypeCount}]];
+new Chart(document.getElementById('vehicleChart'),{type:'bar',data:{labels:Object.keys(vtc),datasets:[{label:'Sessions',data:Object.values(vtc),backgroundColor:colors,borderRadius:8}]},options:{...cfg,scales:{y:{ticks:{color:'#94a3b8'},grid:{color:'rgba(255,255,255,0.05)'}},x:{ticks:{color:'#94a3b8'},grid:{display:false}}}}});
+const itc=[[${incidentTypeCount}]];
+new Chart(document.getElementById('incidentChart'),{type:'bar',data:{labels:Object.keys(itc),datasets:[{label:'Incidents',data:Object.values(itc),backgroundColor:colors.slice(3),borderRadius:8}]},options:{...cfg,indexAxis:'y',scales:{x:{ticks:{color:'#94a3b8'},grid:{color:'rgba(255,255,255,0.05)'}},y:{ticks:{color:'#94a3b8'},grid:{display:false}}}}});
+</script></body></html>
